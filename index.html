@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            .divinlagg {
+                margin:10px;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+                $(".form").hide();
+                if (localStorage.minDagbok==null){
+                    var dagbok=[{
+                    "Rubrik":"Hello World",
+                    "Datum":"04-10-18",
+                    "Text":"Mitt första inlägg"
+                    }];
+
+                    var jsonString=JSON.stringify(dagbok);
+                    localStorage.minDagbok=jsonString;
+            };
+
+            loopList();
+
+            function loopList(){
+                var loopDagbok=JSON.parse(localStorage.minDagbok);
+                $(".inlagg").html("")
+                for (var index=0;index<loopDagbok.length;index++){
+                    $(".inlagg").append("<div class='divinlagg'>"+loopDagbok[index].Rubrik +"<br>"+ loopDagbok[index].Datum +"<br>"+ loopDagbok[index].Text +"</div>")
+                };
+            };
+
+            $(".create").click(function(){
+                $(".form").toggle("slow");
+            });
+            
+            $(".submit").click(function(){
+
+                var saveRubrik =  $(".i1").val(); 
+                var saveDatum =  $(".i2").val(); 
+                var saveText =  $(".text1").val(); 
+            
+                var inlagg={
+                    "Rubrik":saveRubrik,
+                    "Datum":saveDatum,
+                    "Text":saveText
+                };
+
+                    var parseInlagg=JSON.parse(localStorage.minDagbok);
+                   
+                        parseInlagg.push(inlagg);
+
+                        var jsonInlagg=JSON.stringify(parseInlagg);
+                        localStorage.minDagbok=jsonInlagg;
+                    loopList();
+            });
+               
+                    
+                
+        });
+      
+        </script>
+    </head>
+    <body>
+        <h1>Dagbok</h1>
+        <button class="create">Skriv Nytt Inlägg</button>
+        <div class="form">
+            Rubrik:<input class="i1" type="text" style="margin-top:10px;">
+            <br>
+            Datum:<input class="i2" type="text" style="margin-top:10px;">
+            <br>
+            <textarea class="text1" style="margin-top:10px;min-height:100px;min-width:300px;"></textarea>
+            <br>
+            <button class="submit">Ladda upp</button>
+        </div>
+        <div class="inlagg" style="min-height:200px;border:1px solid black;margin-top:20px;"></div>
+    </body>
+</html>
